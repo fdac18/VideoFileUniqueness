@@ -3,6 +3,7 @@ import numpy as np
 
 ## Test the geometry extraction function.
 #top5geo(cv2.imread('home.png',0))
+#(reals, imags) = top5geo(cv2.imread('home.png',0))
 
 def top5geo(img):
 
@@ -38,6 +39,8 @@ def top5geo(img):
 	index_i = [0, 0, 0, 0, 0]
 	index_j = [0, 0, 0, 0, 0]
 	value = [0, 0, 0, 0, 0]
+	reals = [0, 0, 0, 0, 0]
+	imags = [0, 0, 0, 0, 0]
 	for i in range(len(out)):
 		for j in range(len(out[0])):
 			m = outimg[i][j]
@@ -45,12 +48,12 @@ def top5geo(img):
 				if m > value[k]:
 					#print("Found: " + str(i) + " " + str(j))
 					value[k] = m
+					reals[k] = out[i][j][0]
+					imags[k] = out[i][j][1]
 					index_i[k] = i
 					index_j[k] = j
 					break
 	
-	print(index_i)
-	print(index_j)
 
 	#print(outimg)
 
@@ -58,4 +61,10 @@ def top5geo(img):
 	#cv2.waitKey(0)
 	#cv2.destroyAllWindows()
 
-	return
+	#print(index_i)
+	#print(index_j)
+
+	#print(reals)
+	#print(imags)
+
+	return (reals, imags)
