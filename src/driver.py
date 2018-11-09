@@ -21,6 +21,4 @@ path = parsedargs.data_path
 data = glob.glob(path + "/*.avi")
 
 ## Read-in the data structure template.
-template = pd.read_csv("template.csv")
-
-## Use glob to generate list of all video files in the specified path.
+#template = pd.read_csv("template.csv")
