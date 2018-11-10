@@ -9,6 +9,7 @@ import math
 K=7		#default K value
 MaxI=800	#default limit on iterations
 MVThresh = .05	#movement threshold
+NPCA = 2	#number of PCAs to look through
 
 #class used to organize data by cluster
 class Cluster:
@@ -40,11 +41,11 @@ class Cluster:
 
 #class to hold frame data
 class Frame:
-	def __init__(self, fNo, x, y, Fr):
+	def __init__(self, fNo, x, y):
 		self.FrameNo = fNo
 		self.X = x	#x value of the corresponding PCA
 		self.Y = y	#y value of the corresponding PCA
-		self.Frame = Fr.copy();	#have the frame on hand if necessary
+#		self.Frame = Fr.copy();	#have the frame on hand if necessary
 		self.clusterNo = -1
 	def setCluster(self, A):
 		self.clusterNo = A
@@ -180,20 +181,23 @@ def CLUSTER(data): #pixel data comes in in 2d vector, only way to do svd
 	for x in range(0, K):
 		A = Cluster(x, data[ra[x]].getX(), data[ra[x]].getY())
 		clu.append(A)
-
-	OUT = Kmeans(clu, data, 0)
+	Fr = []
+	#make the frame containers
+	for i in range(0, len(VT[0])-1):
+		Fr.append(i,VT[0][i], VT[1][i])
+	OUT = Kmeans(clu, Fr, 0)
 	tmp = []
-	for S in sc:
-		for c in clu:
-			tmp.append(Dis(c, S))
-		clu[Mindex(tmp)].addSch(S)
-		tmp.clear()
+#	for F in Fr:
+#		for c in clu:
+#			tmp.append(Dis(c, F))
+#		clu[Mindex(tmp)].addFrame(F)
+#		tmp.clear()
 	for C in clu:
 		C.printC()
 	print(OUT)
-	A = MinInter(clu, sc)
+	A = MinInter(clu, points)
 	B = MaxIntra(clu)
-	PlotD(sc, clu)
+	PlotD(points, clu)
 	print("minimal intercluster distance = %f" %(A))
 	print("Maximum intracluster distance = %f" %(B))
 	print("Dunn index = %f" %(B/A))
