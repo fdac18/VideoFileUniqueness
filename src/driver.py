@@ -20,5 +20,5 @@ path = parsedargs.data_path
 ## Generate list of strings of video file names using glob or subprocess.
 data = glob.glob(path + "/*.avi")
 
-## Read-in the data structure template.
-#template = pd.read_csv("template.csv")
+## Go through videos, go through frames, store the data.
+
