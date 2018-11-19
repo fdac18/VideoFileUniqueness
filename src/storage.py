@@ -1,4 +1,13 @@
 #!/usr/bin/env
+
+"""
+How to Use this File:
+	First Run this file on its own, the main function will initialize the Databse file and both tabels
+	Then import the functions connectDB, addDB_Vid, addDB_frame
+	Run connectDB at the top of your file to get the cnnct object that is used in both other functions as the first argument
+	after that simply us the add functions as needed
+"""
+
 # This file contains functions which can be called to create and modify a database for the video file uniqueness project
 # this file when run on its own will create the initial database and tables, and can be referenced by other python files to easily add and remove data from tables
 # the contents of this are based on the tutorial at sqlitetutorial.net
