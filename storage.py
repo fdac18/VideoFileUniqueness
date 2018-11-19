@@ -35,12 +35,22 @@ def make_table(cnnct, create_table_sql):
 def addDB_Vid(cnnct, newVidName):
 	#this function adds a Video to the database
 	#this one will create the video data and also two empty frame objects
+	#newVidName is the full name and path of the video file
 	sql = ''' INSERT INTO  videos(name, chosenFrameID)
 			  VALUES(?, 0)'''
 	curs = cnnct.cursor()
 	curs.execute(sql, newVidName)
 	# this will return the id of the video
 	return curs.lastrowid
+
+def updateDB_Vid(cnnct, target, bestFrame_ID):
+	#this function allows one to update the chosenFrameID value in the video, this value is 0 by default 
+	#target is the ID of the video in question, bestFrame_ID is the id of the best frame
+	sql = ''' UPDATE videos
+			  SET chosenFrameID = ?
+			  WHERE id = ?'''
+	curs = cnnct.cursor()
+	curs.execute(sql,(bestFrame_ID, target)
 
 def addDB_frame(cnnct, vidID, newName, newRedArr, newGrnArr, newBluArr, newReals, newImags):
 	#this should update a targeted frame as we create frames when we make videos all 'added' frames done by other programs is actually a matter of updating them
@@ -116,6 +126,15 @@ def get_frames(cnnct, vid_id):
 	curs.execute("SELECT * FROM frames WHERE vid_id=?", vid_id)
 	frameBuf = curs.fetchall()
 	return frameBuf
+
+def get_vid_ID(cnnct, target):
+	#this will return all stored info for a video file, searching for it by name
+	#it should take the form of a list of lists
+	curs = cnnct.cusor()
+	curs.execute("SELECT * FROM videos WHERE name=?", target)
+	frameBuf = curs.fetchone()
+	return frameBuf
+
 
 # if this file is run on its own it runs main and will create the database file and its tables
 if __name__ == '__main__':
