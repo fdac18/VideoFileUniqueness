@@ -26,60 +26,70 @@ def make_table(cnnct, create_table_sql):
 def addDB_Vid(cnnct, newVidName):
 	#this function adds a Video to the database
 	#this one will create the video data and also two empty frame objects
-	sql = ''' INSERT INTO  videos(name, avg_frame, best_frame)
-			  VALUES(?,?,?)'''
+	sql = ''' INSERT INTO  videos(name, chosenFrameID)
+			  VALUES(?, 0)'''
 	curs = cnnct.cursor()
-	curs.execute(sql, newVid)
-
-	avgFrame = ('Average', curs.lastrowid, 0, 0, 0, 0, 0 )
-	uniqueFrame = ('Unique', curs.lastrowid, 0, 0, 0, 0, 0)
-	#add frames for average and unique
-	addDB_Frame(cnnct, avgFrame) 
-	addDB_Frame(cnnct, uniqueFrame)
+	curs.execute(sql, newVidName)
 	# this will return the id of the video
 	return curs.lastrowid
 
-def addDB_Frame(cnnct, newFrame):
-	#this function adds a Frame to the database
-	# this is actually a function that modifies the exsisting frame objects for each video
-	sql = ''' INSERT INTO frames(vid_id, name, green_val, red_val, blue_val) '''
+def addDB_frame(cnnct, vidID, newName, newRedArr, newGrnArr, newBluArr, newReals, newImags):
+	#this should update a targeted frame as we create frames when we make videos all 'added' frames done by other programs is actually a matter of updating them
+	# in theory the ID of the frame for a given video should have the id of vid_id * 2 + 0 for average and + 1 for unique
+	newFrame = []
+	newFrame[0] = newName
+	newFrame[1] = vidID
+	newFrame = newFrame + newRedArr + newGrnArr + newBluArr + newReals + newImags
+	sql = ''' INSERT INTO frames( 
+			  	  name, tableID
+				  red_val_0, red_val_1, red_val_2, red_val_3, red_val_4,
+				  grn_val_0, grn_val_1, grn_val_2, grn_val_3, grn_val_4,
+				  blu_val_0, blu_val_1, blu_val_2, blu_val_3, blu_val_4,
+				  reals_0, reals_1, reals_2, reals_3, reals_4,
+				  imags_0, imags_1, imags_2, imags_3,imags_4) 
+			  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'''
 	curs = cnnct.cursor()
 	curs.execute(sql, newFrame)
 	return curs.lastrowid
-
-def update_frame(cnnct, newFrame):
-	#this should update a targeted frame as we create frames when we make videos all 'added' frames done by other programs is actually a matter of updating them
-	# in theory the ID of the frame for a given video should have the id of vid_id * 2 + 0 for average and + 1 for unique
-	sql = ''' UPDATE frames
-			  SET 
-			  	  name 	  = ? ,
-			  	  red_val = ? ,
-			      grn_val = ? ,
-				  blu_val = ?
-				  reals   = ? ,
-				  imags   = ?
-			  Where id = ?'''
-	curs = cnnct.cursor()
-	curs.execute(sql, newFrame)
 
 def main():
 	db = VFU_DB.db
 	sql_create_video_table = """ CREATE TABLE IF NOT EXISTS videos (
 		id integer PRIMARY KEY,
 		name text NOT NULL,
-		avg_frame integer NOT NULL,
-		best_frame integer NOT NULL,
+		chosenFrameID integer
 		); """
 
 	sql_create_frame_table = """CREATE TABLE IF NOT EXISTS frames (
 		id integer PRIMARY KEY,
 		vid_id integer NOT NULL,
 		name text NOT NULL,
-		red_val integer NOT NULL,
-		grn_val integer NOT NULL,
-		blu_val integer NOT NULL,
-		reals integer NOT NULL,
-		imags integer NOT NULL
+		red_val_0 integer NOT NULL,
+		red_val_1 integer NOT NULL,
+		red_val_2 integer NOT NULL,
+		red_val_3 integer NOT NULL,
+		red_val_4 integer NOT NULL,
+		grn_val_0 integer NOT NULL,
+		grn_val_1 integer NOT NULL,
+		grn_val_2 integer NOT NULL,
+		grn_val_3 integer NOT NULL,
+		grn_val_4 integer NOT NULL,
+		blu_val_0 integer NOT NULL,
+		blu_val_1 integer NOT NULL,
+		blu_val_2 integer NOT NULL,
+		blu_val_3 integer NOT NULL,
+		blu_val_4 integer NOT NULL,
+		reals_0 integer NOT NULL,
+		reals_1 integer NOT NULL,
+		reals_2 integer NOT NULL,
+		reals_3 integer NOT NULL,
+		reals_4 integer NOT NULL,
+		imags_0 integer NOT NULL,
+		imags_1 integer NOT NULL,
+		imags_2 integer NOT NULL,
+		imags_3 integer NOT NULL,
+		imags_4 integer NOT NULL,
+		FOREIGN KEY (vid_id) REFERENCES videos (id)
 	);"""
 
 	con = connectDB(db)
