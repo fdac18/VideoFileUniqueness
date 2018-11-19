@@ -3,7 +3,9 @@
 """
 How to Use this File:
 	First Run this file on its own, the main function will initialize the Databse file and both tabels
-	Then import the functions connectDB, addDB_Vid, addDB_frame, get_frames
+	Then import the function connectDB 
+	Additionally import whatever other functions you wish to employ:
+		addDB_Vid, addDB_Frame, updateDB_Vid, get_Frames, get_Vid_ID
 	Run connectDB at the top of your file to get the cnnct object that is used in both other functions as the first argument
 	after that simply us the add or get functions as needed
 """
@@ -52,7 +54,7 @@ def updateDB_Vid(cnnct, target, bestFrame_ID):
 	curs = cnnct.cursor()
 	curs.execute(sql,(bestFrame_ID, target)
 
-def addDB_frame(cnnct, vidID, newName, newRedArr, newGrnArr, newBluArr, newReals, newImags):
+def addDB_Frame(cnnct, vidID, newName, newRedArr, newGrnArr, newBluArr, newReals, newImags):
 	#this should update a targeted frame as we create frames when we make videos all 'added' frames done by other programs is actually a matter of updating them
 	# in theory the ID of the frame for a given video should have the id of vid_id * 2 + 0 for average and + 1 for unique
 	newFrame = []
@@ -70,6 +72,22 @@ def addDB_frame(cnnct, vidID, newName, newRedArr, newGrnArr, newBluArr, newReals
 	curs = cnnct.cursor()
 	curs.execute(sql, newFrame)
 	return curs.lastrowid
+
+def get_Frames(cnnct, vid_id):
+	#this will return all stored frames associated with a certain video 
+	#it should take the form of a list of lists
+	curs = cnnct.cusor()
+	curs.execute("SELECT * FROM frames WHERE vid_id=?", vid_id)
+	frameBuf = curs.fetchall()
+	return frameBuf
+
+def get_Vid_ID(cnnct, target):
+	#this will return all stored info for a video file, searching for it by name
+	#it should take the form of a list of lists
+	curs = cnnct.cusor()
+	curs.execute("SELECT * FROM videos WHERE name=?", target)
+	frameBuf = curs.fetchone()
+	return frameBuf
 
 def main():
 	db = VFU_DB.db
@@ -118,23 +136,6 @@ def main():
 		make_table(con, sql_create_frame_table)
 	else:
 		print("error encountered no database connection")
-
-def get_frames(cnnct, vid_id):
-	#this will return all stored frames associated with a certain video 
-	#it should take the form of a list of lists
-	curs = cnnct.cusor()
-	curs.execute("SELECT * FROM frames WHERE vid_id=?", vid_id)
-	frameBuf = curs.fetchall()
-	return frameBuf
-
-def get_vid_ID(cnnct, target):
-	#this will return all stored info for a video file, searching for it by name
-	#it should take the form of a list of lists
-	curs = cnnct.cusor()
-	curs.execute("SELECT * FROM videos WHERE name=?", target)
-	frameBuf = curs.fetchone()
-	return frameBuf
-
 
 # if this file is run on its own it runs main and will create the database file and its tables
 if __name__ == '__main__':
