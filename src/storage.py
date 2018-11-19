@@ -3,9 +3,11 @@
 """
 How to Use this File:
 	First Run this file on its own, the main function will initialize the Databse file and both tabels
-	Then import the functions connectDB, addDB_Vid, addDB_frame
+	Then import the function connectDB 
+	Additionally import whatever other functions you wish to employ:
+		addDB_Vid, addDB_Frame, updateDB_Vid, get_Frames, get_Vid_ID
 	Run connectDB at the top of your file to get the cnnct object that is used in both other functions as the first argument
-	after that simply us the add functions as needed
+	after that simply us the add or get functions as needed
 """
 
 # This file contains functions which can be called to create and modify a database for the video file uniqueness project
@@ -35,6 +37,7 @@ def make_table(cnnct, create_table_sql):
 def addDB_Vid(cnnct, newVidName):
 	#this function adds a Video to the database
 	#this one will create the video data and also two empty frame objects
+	#newVidName is the full name and path of the video file
 	sql = ''' INSERT INTO  videos(name, chosenFrameID)
 			  VALUES(?, 0)'''
 	curs = cnnct.cursor()
@@ -42,7 +45,16 @@ def addDB_Vid(cnnct, newVidName):
 	# this will return the id of the video
 	return curs.lastrowid
 
-def addDB_frame(cnnct, vidID, newName, newRedArr, newGrnArr, newBluArr, newReals, newImags):
+def updateDB_Vid(cnnct, target, bestFrame_ID):
+	#this function allows one to update the chosenFrameID value in the video, this value is 0 by default 
+	#target is the ID of the video in question, bestFrame_ID is the id of the best frame
+	sql = ''' UPDATE videos
+			  SET chosenFrameID = ?
+			  WHERE id = ?'''
+	curs = cnnct.cursor()
+	curs.execute(sql,(bestFrame_ID, target)
+
+def addDB_Frame(cnnct, vidID, newName, newRedArr, newGrnArr, newBluArr, newReals, newImags):
 	#this should update a targeted frame as we create frames when we make videos all 'added' frames done by other programs is actually a matter of updating them
 	# in theory the ID of the frame for a given video should have the id of vid_id * 2 + 0 for average and + 1 for unique
 	newFrame = []
@@ -60,6 +72,22 @@ def addDB_frame(cnnct, vidID, newName, newRedArr, newGrnArr, newBluArr, newReals
 	curs = cnnct.cursor()
 	curs.execute(sql, newFrame)
 	return curs.lastrowid
+
+def get_Frames(cnnct, vid_id):
+	#this will return all stored frames associated with a certain video 
+	#it should take the form of a list of lists
+	curs = cnnct.cusor()
+	curs.execute("SELECT * FROM frames WHERE vid_id=?", vid_id)
+	frameBuf = curs.fetchall()
+	return frameBuf
+
+def get_Vid_ID(cnnct, target):
+	#this will return all stored info for a video file, searching for it by name
+	#it should take the form of a list of lists
+	curs = cnnct.cusor()
+	curs.execute("SELECT * FROM videos WHERE name=?", target)
+	frameBuf = curs.fetchone()
+	return frameBuf
 
 def main():
 	db = VFU_DB.db
