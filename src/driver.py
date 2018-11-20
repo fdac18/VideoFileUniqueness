@@ -24,19 +24,22 @@ path = parsedargs.data_path
 data = glob.glob(path + "/*.avi")
 
 ## Instantiate the database.
-file_creation()
+fname = file_creation()
+dbref = connectDB(fname)
 
 ## Go through videos, go through frames, store the data.
 # for each video:
 for i in range(len(data)):
+	# Add video to DB.
+	idno = addDB_Vid(dbref, data[i])
 	frm = read_frame_from_file(data[i])
 	cv2.imwrite("juggle.jpg",frm)
 #    for each frame:
 #       collect color data
 	rgbs = quantize_image(frm, 5)
 	print("RGB Values", rgbs)
-	(res, ims) = top5geo(frm)
-	print("Geometric Data", res, ims)
+	#(res, ims) = top5geo(frm)
+	#print("Geometric Data", res, ims)
 #	collect geometric data
 #	store data in database
 

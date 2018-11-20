@@ -140,6 +140,8 @@ def file_creation():
 	else:
 		print("error encountered no database connection")
 
+	return "VFU_DB.db"
+
 # if this file is run on its own it runs main and will create the database file and its tables
 if __name__ == '__main__':
 	main()
