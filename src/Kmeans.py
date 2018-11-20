@@ -1,10 +1,10 @@
 import numpy as np
-import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 import sys
 import random
 import math
+import csv
 
 K=7		#default K value
 MaxI=800	#default limit on iterations
@@ -62,6 +62,23 @@ class Frame:
 	def printS(self):
 		print("--%s" %(self.name))
 
+
+def getData(str):
+	data = []
+	with open(str) as CSV_:
+		d = csv.reader(CSV_, delimiter=',')
+		for i, row in enumerate(d):
+			if(i!=0):
+				for index, R in enumerate(row):
+					try:
+						row[index] = int(R)
+					except:
+						continue
+				data.append(row)
+				print(row)
+#       print(data)
+	return data
+
 def Dis(clu, S):
 	#return the distance of the cluster and the Frame
 	return (math.sqrt((clu.getX() - S.getX())**2+(clu.getY() - S.getY())**2))
@@ -107,7 +124,7 @@ def Kmeans(clusters, Frames, itter):
 
 		Xavg = 0
 		Yavg = 0
-		if((len(c.frames)!= 0) and (np.sqrt((Xavg/len(c.frames))**2+(Yavg/len(c.frames))**2) < MVThresh)):
+		if((len(c.frames)!= 0) and (math.sqrt((Xavg/len(c.frames))**2+(Yavg/len(c.frames))**2) < MVThresh)):
 			MV+=1
 
 	if(MV == K-1):
@@ -202,4 +219,5 @@ def CLUSTER(data): #pixel data comes in in 2d vector, only way to do svd
 	print("Maximum intracluster distance = %f" %(B))
 	print("Dunn index = %f" %(B/A))
 
-CLUSTER()
+D = getData(sys.argv[1])
+CLUSTER(D)
