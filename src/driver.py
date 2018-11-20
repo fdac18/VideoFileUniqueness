@@ -5,7 +5,6 @@
 
 import argparse
 import pandas as pd
-#from imageproc import *
 from quantzxn import *
 from geom import *
 from storage import *
@@ -28,6 +27,8 @@ print(data)
 # for each video:
 #    for each frame:
 #       collect color data
+#	rgbs = quantize_image('home.png', 5)
+#	print("RGB Values", rgbs)
 #	collect geometric data
 #	store data in database
 
