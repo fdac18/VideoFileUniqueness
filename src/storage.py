@@ -90,8 +90,8 @@ def get_Vid_ID(cnnct, target):
 	frameBuf = curs.fetchone()
 	return frameBuf
 
-def main():
-	dir_path = os.path.dirname(ps.path.realpath(__file__))
+def file_creation():
+	dir_path = os.path.dirname(os.path.realpath(__file__))
 	
 	db = os.path.join(dir_path, "VFU_DB.db")
 	sql_create_video_table = """ CREATE TABLE IF NOT EXISTS videos (

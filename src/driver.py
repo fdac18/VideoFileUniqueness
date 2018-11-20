@@ -22,8 +22,9 @@ path = parsedargs.data_path
 
 ## Generate list of strings of video file names using glob or subprocess.
 data = glob.glob(path + "/*.avi")
-#print(data)
-## Workflow confirmed up to here.
+
+## Instantiate the database.
+file_creation()
 
 ## Go through videos, go through frames, store the data.
 # for each video:
@@ -38,6 +39,8 @@ for i in range(len(data)):
 	print("Geometric Data", res, ims)
 #	collect geometric data
 #	store data in database
+
+
 
 # for each video:
 #	get each frame's data from database
