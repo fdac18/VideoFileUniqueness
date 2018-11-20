@@ -5,9 +5,9 @@ import numpy as np
 import cv2 
 
 
-def quantize_image(file_path, K = 5):
+def quantize_image(img, K = 5):
 
-	img = cv2.imread(file_path)
+	#img = cv2.imread(file_path)
 	Z = img.reshape((-1,3))
 
 	# convert to np.float32
