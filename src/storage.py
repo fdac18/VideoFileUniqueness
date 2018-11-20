@@ -52,7 +52,7 @@ def updateDB_Vid(cnnct, target, bestFrame_ID):
 			  SET chosenFrameID = ?
 			  WHERE id = ?'''
 	curs = cnnct.cursor()
-	curs.execute(sql,(bestFrame_ID, target)
+	curs.execute(sql,(bestFrame_ID, target))
 
 def addDB_Frame(cnnct, vidID, newName, newRedArr, newGrnArr, newBluArr, newReals, newImags):
 	#this should update a targeted frame as we create frames when we make videos all 'added' frames done by other programs is actually a matter of updating them
