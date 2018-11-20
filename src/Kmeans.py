@@ -8,7 +8,7 @@ import csv
 
 K=4		#default K value
 MaxI=800	#default limit on iterations
-MVThresh = .05	#movement threshold
+MVThresh = 0.099	#movement threshold
 NPCA = 2	#number of PCAs to look through
 
 #class used to organize data by cluster
@@ -17,12 +17,18 @@ class Cluster:
 		self.Num = num
 		self.X = x	#x-center of the cluster
 		self.Y = y	#y-center of the cluster
+		self.MoveF = 0	#movement is allowed
 		self.frames = []
 
 	def addFrame(self, F):
 		self.frames.append(F)
 	def getNo(self):
 		return self.Num
+
+	def setF(self, x):
+		self.MoveF = x
+	def getF(self):
+		return self.MoveF
 
 	def setX(self, x):
 		self.X = x
@@ -35,7 +41,7 @@ class Cluster:
 		return self.Y
 
 	def printC(self):
-		print("%d\t%f\t%f" %(self.Num, self.X, self.Y))
+		print("%d\t%d\t%f\t%f" %(self.Num, self.MoveF, self.X, self.Y))
 		for f in self.frames:
 			f.printS()
 
@@ -94,7 +100,7 @@ def Mindex(D):
 
 def Kmeans(clusters, Frames, itter):
 	if(itter == MaxI):	#safety net
-		return MaxI
+		return itter
 	tmp = []
 	#figure out where each school clusters to
 	for c in clusters:
@@ -109,28 +115,31 @@ def Kmeans(clusters, Frames, itter):
 	Yavg = 0
 	MV = 0
 	#set the position of the cluster to the average of the schools closest to it
-	for c in clusters:
-		MV = 0
-		#get the average
-		for F in c.frames:
-			Xavg += F.getX()
-			Yavg += F.getY()
-		#find if the cluster has no frames
-		if(len(c.frames) != 0):
-			c.setX(Xavg/len(c.frames))
-			c.setY(Yavg/len(c.frames))
+	for index, c in enumerate(clusters):
+		if(clusters[index].getF() != 1):
+			#get the average
+			for F in c.frames:
+				Xavg += F.getX()
+				Yavg += F.getY()
+			#find if the cluster has no frames
+			oldX = c.getX()
+			oldY = c.getY()
+			if(len(c.frames) != 0):
+				c.setX(Xavg/len(c.frames))
+				c.setY(Yavg/len(c.frames))
+			else:
+				continue
+#				print("cluster %d has no nearby frames in itteration %d" %(c.Num, itter))
+
+			if((len(c.frames)!= 0) and (math.sqrt((oldX - Xavg/len(c.frames))**2+(oldY - Yavg/len(c.frames))**2) < MVThresh)):
+				clusters[index].setF(1)
+				MV+=1
 		else:
-			continue
-#			print("cluster %d has no nearby frames in itteration %d" %(c.Num, itter))
-
-		Xavg = 0
-		Yavg = 0
-		if((len(c.frames)!= 0) and (math.sqrt((Xavg/len(c.frames))**2+(Yavg/len(c.frames))**2) < MVThresh)):
 			MV+=1
+			if(MV == K):
+				print("HI")
+				return itter
 
-	if(MV == K-1):
-		return itter
-	A=0
 	A = Kmeans(clusters, Frames, itter+1)
 	return A
 
@@ -224,7 +233,7 @@ def CLUSTER(d): #pixel data comes in in 2d vector, only way to do svd
 		A = Cluster(x, data[ra[x]].getX(), data[ra[x]].getY())
 		clu.append(A)
 	OUT = Kmeans(clu, data, 0)
-	tmp = []
+#	tmp = []
 #	for F in Fr:
 #		for c in clu:
 #			tmp.append(Dis(c, F))
