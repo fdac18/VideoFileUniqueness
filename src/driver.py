@@ -5,7 +5,6 @@
 
 import argparse
 import pandas as pd
-#from imageproc import *
 from quantzxn import *
 from geom import *
 from storage import *
