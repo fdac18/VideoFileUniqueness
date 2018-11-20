@@ -5,9 +5,9 @@ import numpy as np
 import cv2 
 
 
-def quantize_image(file_path, K = 5):
+def quantize_image(img, K = 5):
 
-	img = cv2.imread(file_path)
+	#img = cv2.imread(file_path)
 	Z = img.reshape((-1,3))
 
 	# convert to np.float32
@@ -28,7 +28,10 @@ def quantize_image(file_path, K = 5):
 	cv2.destroyAllWindows()
 
 	return center
+<<<<<<< HEAD
 
 
 rgbs = quantize_image('home.png', 5)
 print("RGB Values:\n", rgbs)
+=======
+>>>>>>> 93d151c38c0f8a08379573255bc3e5b232b5a486

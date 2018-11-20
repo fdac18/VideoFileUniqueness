@@ -1,12 +1,12 @@
 import numpy as np
-import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 import sys
 import random
 import math
+import csv
 
-K=7		#default K value
+K=4		#default K value
 MaxI=800	#default limit on iterations
 MVThresh = .05	#movement threshold
 NPCA = 2	#number of PCAs to look through
@@ -19,7 +19,7 @@ class Cluster:
 		self.Y = y	#y-center of the cluster
 		self.frames = []
 
-	def addFrames(self, F):
+	def addFrame(self, F):
 		self.frames.append(F)
 	def getNo(self):
 		return self.Num
@@ -42,7 +42,7 @@ class Cluster:
 #class to hold frame data
 class Frame:
 	def __init__(self, fNo, x, y):
-		self.FrameNo = fNo
+		self.FNo = fNo
 		self.X = x	#x value of the corresponding PCA
 		self.Y = y	#y value of the corresponding PCA
 #		self.Frame = Fr.copy();	#have the frame on hand if necessary
@@ -60,7 +60,23 @@ class Frame:
 		return self.Y
 
 	def printS(self):
-		print("--%s" %(self.name))
+		print("--%5d %5.4f %5.4f" %(self.FNo, self.X, self.Y))
+
+
+def getData(str):
+	data = []
+	with open(str) as CSV_:
+		d = csv.reader(CSV_, delimiter=',')
+		for i, row in enumerate(d):
+			if(i!=0):
+				for index, R in enumerate(row):
+					try:
+						row[index] = float(R)
+					except:
+						continue
+				data.append(row)
+			#	print(row)
+	return data
 
 def Dis(clu, S):
 	#return the distance of the cluster and the Frame
@@ -81,6 +97,8 @@ def Kmeans(clusters, Frames, itter):
 		return MaxI
 	tmp = []
 	#figure out where each school clusters to
+	for c in clusters:
+		c.frames.clear()
 	for F in Frames:
 		for c in clusters:
 			tmp.append(Dis(c, F))
@@ -92,7 +110,6 @@ def Kmeans(clusters, Frames, itter):
 	MV = 0
 	#set the position of the cluster to the average of the schools closest to it
 	for c in clusters:
-		c.frames.clear()
 		MV = 0
 		#get the average
 		for F in c.frames:
@@ -103,29 +120,30 @@ def Kmeans(clusters, Frames, itter):
 			c.setX(Xavg/len(c.frames))
 			c.setY(Yavg/len(c.frames))
 		else:
-			print("cluster %d has no nearby frames in itteration %d" %(c.Num, itter))
+			continue
+#			print("cluster %d has no nearby frames in itteration %d" %(c.Num, itter))
 
 		Xavg = 0
 		Yavg = 0
-		if((len(c.frames)!= 0) and (np.sqrt((Xavg/len(c.frames))**2+(Yavg/len(c.frames))**2) < MVThresh)):
+		if((len(c.frames)!= 0) and (math.sqrt((Xavg/len(c.frames))**2+(Yavg/len(c.frames))**2) < MVThresh)):
 			MV+=1
 
 	if(MV == K-1):
 		return itter
 	A=0
-	A = Kmeans(clusters, Frmaes, itter+1)
+	A = Kmeans(clusters, Frames, itter+1)
 	return A
 
-def MinInter(clusters, S):
-	tmp = []
-	for c in clusters:
-		for A in c.schools:
-			A.setCluster(c.getNo)
-	for sc in S:
-		for sch in S:
-			if(sc.getCluster() != sch.getCluster()):
-				tmp.append(math.sqrt((sc.getX() - sch.getX())**2+(sc.getY() - sch.getY())**2))
-	return min(tmp)
+#def MinInter(clusters, S):
+##	tmp = []
+#	for c in clusters:
+#		for A in c.schools:
+#			A.setCluster(c.getNo)
+#	for sc in S:
+#		for sch in S:
+#			if(sc.getCluster() != sch.getCluster()):
+#				tmp.append(math.sqrt((sc.getX() - sch.getX())**2+(sc.getY() - sch.getY())**2))
+#	return min(tmp)
 
 #def MaxIntra(clusters):
 #	out = 0
@@ -150,7 +168,7 @@ def PlotD(Sch, clus):
 	i=0
 	for c in clus:
 		plt.plot(c.getX(), c.getY(), Ccol[i%len(Ccol)])
-		for S in c.schools:
+		for S in c.frames:
 			X.append(S.getX())
 			Y.append(S.getY())
 		plt.plot(X,Y, col[i%len(col)])
@@ -164,14 +182,38 @@ def PlotD(Sch, clus):
 	leg.get_frame().set_alpha(0.4)
 	plt.ylabel("pca1")
 	plt.xlabel("pca2")
-	outF = "cluster.png"
+	outF = sys.argv[2] + ".png"
 	plt.savefig(outF)
 	plt.close()
-def CLUSTER(data): #pixel data comes in in 2d vector, only way to do svd
+def Transpose(data):
+
+        TOT = len(data[0])
+        RES = []
+        temp = []
+        for x in range(TOT):
+                temp.clear()
+                for index, line in enumerate(data):
+                        try:
+                                temp.append(float(line[x]))
+                        except:
+                                temp.append(line[x])
+                RES.append(temp.copy())
+        return RES
+def CLUSTER(d): #pixel data comes in in 2d vector, only way to do svd
 
 	#perform svd, need to decide on some issues
-	U, SIG, VT= np.linalg.svd(data, full_matrices=True)
+	U, SIG, VT= np.linalg.svd(d, full_matrices=True)
 
+#	VT = Transpose(VT)
+	P1 = U[0].copy()
+	P2 = U[1].copy()
+#	print("U  - %d by %d" %(len(U[0]), len(U)) )
+#	print("VT - %d by %d" %(len(VT[0]), len(VT)) )
+	data = []
+	for index, P in enumerate(P1):
+		A = Frame(index, P1[index], P2[index])
+		data.append(A)
+		A.printS()
 	ra = []
 	#select K random frames for K-means
 	for x in range(K):
@@ -181,11 +223,7 @@ def CLUSTER(data): #pixel data comes in in 2d vector, only way to do svd
 	for x in range(0, K):
 		A = Cluster(x, data[ra[x]].getX(), data[ra[x]].getY())
 		clu.append(A)
-	Fr = []
-	#make the frame containers
-	for i in range(0, len(VT[0])-1):
-		Fr.append(i,VT[0][i], VT[1][i])
-	OUT = Kmeans(clu, Fr, 0)
+	OUT = Kmeans(clu, data, 0)
 	tmp = []
 #	for F in Fr:
 #		for c in clu:
@@ -195,11 +233,12 @@ def CLUSTER(data): #pixel data comes in in 2d vector, only way to do svd
 	for C in clu:
 		C.printC()
 	print(OUT)
-	A = MinInter(clu, points)
-	B = MaxIntra(clu)
-	PlotD(points, clu)
-	print("minimal intercluster distance = %f" %(A))
-	print("Maximum intracluster distance = %f" %(B))
-	print("Dunn index = %f" %(B/A))
+#	A = MinInter(clu, points)
+#	B = MaxIntra(clu)
+	PlotD(data, clu)
+#	print("minimal intercluster distance = %f" %(A))
+#	print("Maximum intracluster distance = %f" %(B))
+#	print("Dunn index = %f" %(B/A))
 
-CLUSTER()
+D = getData(sys.argv[1])
+CLUSTER(D)
