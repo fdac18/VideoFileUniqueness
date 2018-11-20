@@ -20,15 +20,15 @@ def quantize_image(file_path, K = 5):
 
 	# Now convert back into uint8, and make original image
 	center = np.uint8(center)
-	#res = center[label.flatten()]
-	#res2 = res.reshape((img.shape))
+	res = center[label.flatten()]
+	res2 = res.reshape((img.shape))
 
-	#cv2.imshow('res2',res2)
-	#cv2.waitKey(0)
-	#cv2.destroyAllWindows()
+	cv2.imshow('res2',res2)
+	cv2.waitKey(0)
+	cv2.destroyAllWindows()
 
 	return center
 
 
 rgbs = quantize_image('home.png', 5)
-print("RGB Values", rgbs)
+print("RGB Values:\n", rgbs)
