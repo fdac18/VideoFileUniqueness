@@ -28,7 +28,3 @@ def quantize_image(file_path, K = 5):
 	#cv2.destroyAllWindows()
 
 	return center
-
-
-rgbs = quantize_image('home.png', 5)
-print("RGB Values", rgbs)
