@@ -5,9 +5,11 @@
 
 import argparse
 import pandas as pd
+import cv2 
 from quantzxn import *
 from geom import *
 from storage import *
+from soi import *
 import glob
 
 ## Parse the arguments.
@@ -20,17 +22,28 @@ path = parsedargs.data_path
 
 ## Generate list of strings of video file names using glob or subprocess.
 data = glob.glob(path + "/*.avi")
-#print(data)
-## Workflow confirmed up to here.
+
+## Instantiate the database.
+fname = file_creation()
+dbref = connectDB(fname)
 
 ## Go through videos, go through frames, store the data.
 # for each video:
+for i in range(len(data)):
+	# Add video to DB.
+	idno = addDB_Vid(dbref, data[i])
+	frm = read_frame_from_file(data[i])
+	cv2.imwrite("juggle.jpg",frm)
 #    for each frame:
 #       collect color data
-#	rgbs = quantize_image('home.png', 5)
-#	print("RGB Values", rgbs)
+	rgbs = quantize_image(frm, 5)
+	print("RGB Values", rgbs)
+	#(res, ims) = top5geo(frm)
+	#print("Geometric Data", res, ims)
 #	collect geometric data
 #	store data in database
+
+
 
 # for each video:
 #	get each frame's data from database

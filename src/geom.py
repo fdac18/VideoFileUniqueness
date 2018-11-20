@@ -7,9 +7,12 @@ import numpy as np
 
 def top5geo(img):
 
+	img2 = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+	img = img2
+
 	#outimg = img #np.zeros((1,1))
 
-	print(np.shape(img))
+	#print(np.shape(img))
 
 	#for i in range(len(img)):
 	#	for j in range(len(img[0])):
