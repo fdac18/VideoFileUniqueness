@@ -20,8 +20,8 @@ path = parsedargs.data_path
 
 ## Generate list of strings of video file names using glob or subprocess.
 data = glob.glob(path + "/*.avi")
-print(data)
-
+#print(data)
+## Workflow confirmed up to here.
 
 ## Go through videos, go through frames, store the data.
 # for each video:
