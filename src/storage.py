@@ -14,6 +14,7 @@ How to Use this File:
 # this file when run on its own will create the initial database and tables, and can be referenced by other python files to easily add and remove data from tables
 # the contents of this are based on the tutorial at sqlitetutorial.net
 
+import os
 import sqlite3
 from sqlite3 import Error
 
@@ -90,7 +91,9 @@ def get_Vid_ID(cnnct, target):
 	return frameBuf
 
 def main():
-	db = VFU_DB.db
+	dir_path = os.path.dirname(ps.path.realpath(__file__))
+	
+	db = os.path.join(dir_path, "VFU_DB.db")
 	sql_create_video_table = """ CREATE TABLE IF NOT EXISTS videos (
 		id integer PRIMARY KEY,
 		name text NOT NULL,
