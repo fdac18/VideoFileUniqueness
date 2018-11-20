@@ -76,7 +76,6 @@ def getData(str):
 						continue
 				data.append(row)
 			#	print(row)
-#       print(data)
 	return data
 
 def Dis(clu, S):
@@ -183,17 +182,33 @@ def PlotD(Sch, clus):
 	leg.get_frame().set_alpha(0.4)
 	plt.ylabel("pca1")
 	plt.xlabel("pca2")
-	outF = "cluster.png"
+	outF = sys.argv[2] + ".png"
 	plt.savefig(outF)
 	plt.close()
+def Transpose(data):
+
+        TOT = len(data[0])
+        RES = []
+        temp = []
+        for x in range(TOT):
+                temp.clear()
+                for index, line in enumerate(data):
+                        try:
+                                temp.append(float(line[x]))
+                        except:
+                                temp.append(line[x])
+                RES.append(temp.copy())
+        return RES
 def CLUSTER(d): #pixel data comes in in 2d vector, only way to do svd
 
 	#perform svd, need to decide on some issues
 	U, SIG, VT= np.linalg.svd(d, full_matrices=True)
 
-	P1 = VT[0].copy()
-	P2 = VT[1].copy()
-
+#	VT = Transpose(VT)
+	P1 = U[0].copy()
+	P2 = U[1].copy()
+#	print("U  - %d by %d" %(len(U[0]), len(U)) )
+#	print("VT - %d by %d" %(len(VT[0]), len(VT)) )
 	data = []
 	for index, P in enumerate(P1):
 		A = Frame(index, P1[index], P2[index])
