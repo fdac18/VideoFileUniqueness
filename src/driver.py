@@ -42,8 +42,7 @@ for i in range(len(data)):
 	#print("Geometric Data", res, ims)
 #	collect geometric data
 #	store data in database
-
-
+	addDB_Frame(dbref, idno, str(0), rs, gs, bs, res, ims)	
 
 # for each video:
 #	get each frame's data from database
