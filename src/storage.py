@@ -59,8 +59,8 @@ def addDB_Frame(cnnct, vidID, newName, newRedArr, newGrnArr, newBluArr, newReals
 	#this should update a targeted frame as we create frames when we make videos all 'added' frames done by other programs is actually a matter of updating them
 	# in theory the ID of the frame for a given video should have the id of vid_id * 2 + 0 for average and + 1 for unique
 	newFrame = []
-	newFrame[0] = newName
-	newFrame[1] = vidID
+	newFrame.append(newName)
+	newFrame.append(vidID)
 	newFrame = newFrame + newRedArr + newGrnArr + newBluArr + newReals + newImags
 	sql = ''' INSERT INTO frames( 
 			  	  name, tableID
