@@ -78,7 +78,7 @@ def addDB_Frame(cnnct, vidID, newName, newRedArr, newGrnArr, newBluArr, newReals
 def get_Frames(cnnct, vid_id):
 	#this will return all stored frames associated with a certain video 
 	#it should take the form of a list of lists
-	curs = cnnct.cusor()
+	curs = cnnct.cursor()
 	curs.execute("SELECT * FROM frames WHERE vid_id=?", (vid_id,))
 	frameBuf = curs.fetchall()
 	return frameBuf
@@ -86,7 +86,7 @@ def get_Frames(cnnct, vid_id):
 def get_Vid_ID(cnnct, target):
 	#this will return all stored info for a video file, searching for it by name
 	#it should take the form of a list of lists
-	curs = cnnct.cusor()
+	curs = cnnct.cursor()
 	curs.execute("SELECT * FROM videos WHERE name=?", (target,))
 	frameBuf = curs.fetchone()
 	return frameBuf

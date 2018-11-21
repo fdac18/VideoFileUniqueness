@@ -31,7 +31,7 @@ dbref = connectDB(fname)
 # for each video:
 for i in range(len(data)):
 	# Add video to DB.
-	idno = addDB_Vid(dbref, data[i])
+	vidno = addDB_Vid(dbref, data[i])
 	frm = read_frame_from_file(data[i])
 	cv2.imwrite("juggle.jpg",frm)
 #    for each frame:
@@ -42,7 +42,9 @@ for i in range(len(data)):
 	#print("Geometric Data", res, ims)
 #	collect geometric data
 #	store data in database
-	addDB_Frame(dbref, idno, str(0), rs, gs, bs, res, ims)	
+	fidno = addDB_Frame(dbref, vidno, str(0), rs, gs, bs, res, ims)	
+	get_Frames(dbref, fidno)
+	get_Vid_ID(dbref, "/home/dbarry/link.avi")	
 
 # for each video:
 #	get each frame's data from database
