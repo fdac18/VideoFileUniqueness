@@ -64,7 +64,7 @@ def addDB_Frame(cnnct, vidID, newName, newRedArr, newGrnArr, newBluArr, newReals
 	#newFrame = newFrame + newRedArr + newGrnArr + newBluArr + newReals + newImags
 	newFrame = np.concatenate((newFrame,newRedArr,newGrnArr,newBluArr,newReals,newImags), axis=None)
 	sql = ''' INSERT INTO frames( 
-			  	  name, tableID,
+			  	  vid_id, name,
 				  red_val_0, red_val_1, red_val_2, red_val_3, red_val_4,
 				  grn_val_0, grn_val_1, grn_val_2, grn_val_3, grn_val_4,
 				  blu_val_0, blu_val_1, blu_val_2, blu_val_3, blu_val_4,
