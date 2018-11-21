@@ -42,7 +42,7 @@ def addDB_Vid(cnnct, newVidName):
 	sql = ''' INSERT INTO  videos(name, chosenFrameID)
 			  VALUES(?, 0)'''
 	curs = cnnct.cursor()
-	curs.execute(sql, newVidName)
+	curs.execute(sql, (newVidName,))
 	# this will return the id of the video
 	return curs.lastrowid
 
@@ -78,7 +78,7 @@ def get_Frames(cnnct, vid_id):
 	#this will return all stored frames associated with a certain video 
 	#it should take the form of a list of lists
 	curs = cnnct.cusor()
-	curs.execute("SELECT * FROM frames WHERE vid_id=?", vid_id)
+	curs.execute("SELECT * FROM frames WHERE vid_id=?", (vid_id,))
 	frameBuf = curs.fetchall()
 	return frameBuf
 
@@ -86,7 +86,7 @@ def get_Vid_ID(cnnct, target):
 	#this will return all stored info for a video file, searching for it by name
 	#it should take the form of a list of lists
 	curs = cnnct.cusor()
-	curs.execute("SELECT * FROM videos WHERE name=?", target)
+	curs.execute("SELECT * FROM videos WHERE name=?", (target,))
 	frameBuf = curs.fetchone()
 	return frameBuf
 
