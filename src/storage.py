@@ -13,7 +13,7 @@ How to Use this File:
 # This file contains functions which can be called to create and modify a database for the video file uniqueness project
 # this file when run on its own will create the initial database and tables, and can be referenced by other python files to easily add and remove data from tables
 # the contents of this are based on the tutorial at sqlitetutorial.net
-
+import numpy as np
 import os
 import sqlite3
 from sqlite3 import Error
@@ -61,9 +61,10 @@ def addDB_Frame(cnnct, vidID, newName, newRedArr, newGrnArr, newBluArr, newReals
 	newFrame = []
 	newFrame.append(newName)
 	newFrame.append(vidID)
-	newFrame = newFrame + newRedArr + newGrnArr + newBluArr + newReals + newImags
+	#newFrame = newFrame + newRedArr + newGrnArr + newBluArr + newReals + newImags
+	newFrame = np.concatenate((newFrame,newRedArr,newGrnArr,newBluArr,newReals,newImags), axis=None)
 	sql = ''' INSERT INTO frames( 
-			  	  name, tableID
+			  	  name, tableID,
 				  red_val_0, red_val_1, red_val_2, red_val_3, red_val_4,
 				  grn_val_0, grn_val_1, grn_val_2, grn_val_3, grn_val_4,
 				  blu_val_0, blu_val_1, blu_val_2, blu_val_3, blu_val_4,
