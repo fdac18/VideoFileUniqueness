@@ -31,7 +31,7 @@ dbref = connectDB(fname)
 # for each video:
 for i in range(len(data)):
 	# Add video to DB.
-	idno = addDB_Vid(dbref, data[i])
+	#idno = addDB_Vid(dbref, data[i])
 	frm = read_frame_from_file(data[i])
 	cv2.imwrite("juggle.jpg",frm)
 #    for each frame:

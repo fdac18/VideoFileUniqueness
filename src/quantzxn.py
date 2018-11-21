@@ -23,15 +23,8 @@ def quantize_image(img, K = 5):
 	res = center[label.flatten()]
 	res2 = res.reshape((img.shape))
 
-	cv2.imshow('res2',res2)
-	cv2.waitKey(0)
-	cv2.destroyAllWindows()
+	#cv2.imshow('res2',res2)
+	#cv2.waitKey(0)
+	#cv2.destroyAllWindows()
 
 	return center
-<<<<<<< HEAD
-
-
-rgbs = quantize_image('home.png', 5)
-print("RGB Values:\n", rgbs)
-=======
->>>>>>> 93d151c38c0f8a08379573255bc3e5b232b5a486
