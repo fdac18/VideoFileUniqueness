@@ -36,8 +36,8 @@ for i in range(len(data)):
 	cv2.imwrite("juggle.jpg",frm)
 #    for each frame:
 #       collect color data
-	rgbs = quantize_image(frm, 5)
-	print("RGB Values", rgbs)
+	(rs,gs,bs) = quantize_image(frm, 5)
+	print("RGB Values", rs, gs, bs)
 	#(res, ims) = top5geo(frm)
 	#print("Geometric Data", res, ims)
 #	collect geometric data

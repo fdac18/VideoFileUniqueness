@@ -27,4 +27,9 @@ def quantize_image(img, K = 5):
 	#cv2.waitKey(0)
 	#cv2.destroyAllWindows()
 
-	return center
+	buff = np.zeros((3,5))
+	for i in range(0,3):
+		for j in range(0,5):
+			buff[i][j] = center[j][i]
+
+	return (buff[0], buff[1], buff[2])
