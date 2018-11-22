@@ -141,18 +141,21 @@ def Kmeans(clusters, Frames, itter):
 				return itter
 
 	A = Kmeans(clusters, Frames, itter+1)
-	return A
+	Bframes = []
+	if(itter == 0):
+		for c in clusters:
+			if(len(c.frames) != 0):
+				Bframes.append(nearestF(c))
+	return A, Bframes
 
-#def MinInter(clusters, S):
-##	tmp = []
-#	for c in clusters:
-#		for A in c.schools:
-#			A.setCluster(c.getNo)
-#	for sc in S:
-#		for sch in S:
-#			if(sc.getCluster() != sch.getCluster()):
-#				tmp.append(math.sqrt((sc.getX() - sch.getX())**2+(sc.getY() - sch.getY())**2))
-#	return min(tmp)
+def nearestF(cluster):
+	D = math.inf
+	out = 0;
+	for F in cluster.frames:
+		if(Dis(cluster, F) < D):
+			D=Dis(cluster, F)
+			out = F
+	return out
 
 #def MaxIntra(clusters):
 #	out = 0
@@ -176,11 +179,11 @@ def PlotD(Sch, clus):
 	Y = []
 	i=0
 	for c in clus:
-		plt.plot(c.getX(), c.getY(), Ccol[i%len(Ccol)])
 		for S in c.frames:
 			X.append(S.getX())
 			Y.append(S.getY())
 		plt.plot(X,Y, col[i%len(col)])
+		plt.plot(c.getX(), c.getY(), Ccol[i%len(Ccol)])
 		X.clear()
 		Y.clear()
 		i+=1
@@ -232,7 +235,7 @@ def CLUSTER(d): #pixel data comes in in 2d vector, only way to do svd
 	for x in range(0, K):
 		A = Cluster(x, data[ra[x]].getX(), data[ra[x]].getY())
 		clu.append(A)
-	OUT = Kmeans(clu, data, 0)
+	OUT, FR = Kmeans(clu, data, 0)
 #	tmp = []
 #	for F in Fr:
 #		for c in clu:
@@ -241,7 +244,10 @@ def CLUSTER(d): #pixel data comes in in 2d vector, only way to do svd
 #		tmp.clear()
 	for C in clu:
 		C.printC()
-	print(OUT)
+	print("best Frames")
+	for f in FR:
+		f.printS()
+#	print(OUT)
 #	A = MinInter(clu, points)
 #	B = MaxIntra(clu)
 	PlotD(data, clu)
