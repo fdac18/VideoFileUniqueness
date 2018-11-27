@@ -43,7 +43,7 @@ for i in range(len(data)):
 #	collect geometric data
 #	store data in database
 	fidno = addDB_Frame(dbref, vidno, str(0), rs, gs, bs, res, ims)	
-	print(get_Frames(dbref, fidno))
+	print(get_Frames(dbref, vidno))
 	print(get_Vid_ID(dbref, "/home/dbarry/link.avi"))	
 
 # for each video:
