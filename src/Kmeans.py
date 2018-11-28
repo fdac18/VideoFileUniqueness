@@ -137,7 +137,7 @@ def Kmeans(clusters, Frames, itter):
 		else:
 			MV+=1
 			if(MV == K):
-				print("HI")
+				#print("HI")
 				return itter
 
 	A = Kmeans(clusters, Frames, itter+1)
