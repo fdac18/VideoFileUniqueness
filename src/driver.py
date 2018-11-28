@@ -10,6 +10,7 @@ from quantzxn import *
 from geom import *
 from storage import *
 from soi import *
+from read_frame import *
 import glob
 
 ## Parse the arguments.
@@ -29,22 +30,30 @@ dbref = connectDB(fname)
 
 ## Go through videos, go through frames, store the data.
 # for each video:
+nth_frame = 20
 for i in range(len(data)):
 	# Add video to DB.
 	vidno = addDB_Vid(dbref, data[i])
-	frm = read_frame_from_file(data[i])
-	cv2.imwrite("juggle.jpg",frm)
-#    for each frame:
-#       collect color data
-	(rs,gs,bs) = quantize_image(frm, 5)
-	#print("RGB Values", rs, gs, bs)
-	(res, ims) = top5geo(frm)
-	#print("Geometric Data", res, ims)
-#	collect geometric data
-#	store data in database
-	fidno = addDB_Frame(dbref, vidno, str(0), rs, gs, bs, res, ims)	
-	print(get_Frames(dbref, vidno))
-	print(get_Vid_ID(dbref, "/home/dbarry/link.avi"))	
+	
+	# Go through frames.
+	vidcap = cv2.VideoCapture(data[i])
+	success,frm = vidcap.read()
+	count = 0
+	success = True
+
+	while success:
+		success,image = vidcap.read()
+		print('read a new frame:',success)
+		if count % nth_frame == 0 :
+			#cv2.imwrite('frame%d.jpg'%count,image)
+			(rs,gs,bs) = quantize_image(frm, 5)
+			(res, ims) = top5geo(frm)
+			fidno = addDB_Frame(dbref, vidno, str(0), rs, gs, bs, res, ims)	
+			print(get_Frames(dbref, vidno)[0][0])
+			#print(get_Vid_ID(dbref, "/home/dbarry/Video"))	
+			
+			print('success')
+		count+=1
 
 # for each video:
 #	get each frame's data from database
