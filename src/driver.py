@@ -9,8 +9,9 @@ import cv2
 from quantzxn import *
 from geom import *
 from storage import *
-from soi import *
 from read_frame import *
+#from Kmeans import CLUSTER
+from Kmeans import *
 import glob
 
 ## Parse the arguments.
@@ -60,8 +61,9 @@ for i in range(len(data)):
 		framatrix.append([])
 		for j in range(3,len(summary[i])):
 			framatrix[len(framatrix)-1].append(summary[i][j])
-	print(summary)
-	print(framatrix)
+	#print(summary)
+	#print(framatrix)
+	CLUSTER(framatrix)
 
 # for each video:
 #	get each frame's data from database
