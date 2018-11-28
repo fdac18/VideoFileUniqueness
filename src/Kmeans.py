@@ -159,19 +159,95 @@ def nearestF(cluster):
 			out = F
 	return out
 
-#def MaxIntra(clusters):
-#	out = 0
-#	i=0
-#	k=0
-#	tmp = []
-#	for c in clusters:
-#		while(i < len(c.schools)-1):
-#			k=i+1
-#			while(k < len(c.schools)):
-#				tmp.append(math.sqrt((c.schools[i].getX() - c.schools[k].getX())**2+(c.schools[i].getY() - c.schools[k].getY())**2))
-#				k+=1
-#			i+=1
-#	return max(tmp)
+def MaxDist(Frames, FNO, used):
+	max = -1.0		#distance var
+	max1 =-1		#point index
+	tmp = 0.0
+
+	for x in range(0, len(Frames)):
+		tmp = 0.0
+		for y in range(0, len(Frames)):
+			if(used[x]==0 and used[y]==0):
+				if(FNO[x]!= FNO[y]):
+					tmp+=Dis(Frames[x], Frames[y])
+		if(tmp > max):	#new maximum sum of distances
+			max = tmp
+			max1 = x
+
+	return max1
+
+def getBframes(arr):
+	out = []
+	out1 = []
+	out2 = []
+	out3 =[]
+	out4 = []
+	for index, a in enumerate(arr):
+		for i2, b in enumerate(a):
+			out.append(b)
+			out1.append(index)
+			out2.append(i2)
+			out3.append(0)
+			out4.append(0)
+	return out, out1, out2, out3, out4
+
+def PicVframes(VidF):	#takes in the list of best frames organized by vid# returns INDEXES OF BEST FRAMES
+	Tracker = VidF.copy()	#poped from to rebuild cluster W/O decided video
+	Frames, INDS, Vind, used, out = getBframes(Tracker)
+	numVids = len(VidF)
+
+	U, SIG, VT= np.linalg.svd(frames, full_matrices=True)
+
+	P1 = U[0].copy()
+	P2 = U[1].copy()
+
+	F = []
+	for index, P in enumerate(P1):
+		A = Frame(index, P1[index], P2[index])
+		F.append(A)
+	while(numVids != 0):	#while we still have videos
+		index = MaxDist(F, Vind, used)	#find the largest sum of distances
+		V = INDS[index]
+		ind = Vind[index]
+		out[V] = ind
+		i=0
+		while(i != len(Frames)):
+			if(INDS[i] == V):
+				F.pop(i)
+				Vind.pop(i)
+				INDS.pop(i)
+				used.pop(i)
+			else:
+				i+=1
+		numVids-=1
+	return out
+#		F = []
+#		for index, P in enumerate(P1):
+#			A = Frame(index, P1[index], P2[index])
+#			F.append(A)
+#			#A.printS()
+#		ra = []
+#		#select K random frames for K-means
+#		for x in range(K):
+#			ra.append(random.randint(0, len(F)))
+#		clu = []
+#		#set up initial cluster based on the random frames
+#		for x in range(0, K):
+#			A = Cluster(x, F[ra[x]].getX(), F[ra[x]].getY())
+#			clu.append(A)
+#		OUT, FR = Kmeans(clu, F, 0)	#outputs are meanignless, but all frames are clustered
+#		LAR = maxDist(clu, INDS)	#find the lagest distance between clusters and videos
+#		if(len(LAR)!= 0):	#no problems
+#			out[LAR[0][0]] = LAR[0][1]
+#			out[LAR[1][0]] = LAR[1][1]
+#			F1 = LAR[0]
+#			F2 = LAR[1]
+#			V1 = INDS[F1]
+#			V2 = INDS[F2]
+#			out[V1] = Vind[F1]
+#			out[V2] = Vind[F2]
+
+
 
 def PlotD(Sch, clus):
 	plt.figure()
@@ -214,6 +290,8 @@ def Transpose(data):
                                 temp.append(line[x])
                 RES.append(temp.copy())
         return RES
+
+
 def CLUSTER(d): #pixel data comes in in 2d vector, only way to do svd
 
 	#perform svd, need to decide on some issues
