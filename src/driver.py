@@ -45,15 +45,23 @@ for i in range(len(data)):
 		success,image = vidcap.read()
 		print('read a new frame:',success)
 		if count % nth_frame == 0 :
-			#cv2.imwrite('frame%d.jpg'%count,image)
 			(rs,gs,bs) = quantize_image(frm, 5)
 			(res, ims) = top5geo(frm)
 			fidno = addDB_Frame(dbref, vidno, str(0), rs, gs, bs, res, ims)	
-			print(get_Frames(dbref, vidno)[0][0])
+			#print(get_Frames(dbref, vidno))
 			#print(get_Vid_ID(dbref, "/home/dbarry/Video"))	
 			
 			print('success')
 		count+=1
+
+	summary = get_Frames(dbref, vidno)
+	framatrix = []
+	for i in range(len(summary)):
+		framatrix.append([])
+		for j in range(3,len(summary[i])):
+			framatrix[len(framatrix)-1].append(summary[i][j])
+	print(summary)
+	print(framatrix)
 
 # for each video:
 #	get each frame's data from database
