@@ -1,10 +1,12 @@
 import numpy as np
 import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import sys
 import random
 import math
 import csv
+
 
 K=4		#default K value
 MaxI=800	#default limit on iterations
@@ -194,7 +196,8 @@ def PlotD(Sch, clus):
 	leg.get_frame().set_alpha(0.4)
 	plt.ylabel("pca1")
 	plt.xlabel("pca2")
-	outF = sys.argv[2] + ".png"
+	#outF = sys.argv[2] + ".png"
+	outF = "trainpicture.png"
 	plt.savefig(outF)
 	plt.close()
 def Transpose(data):
@@ -225,7 +228,7 @@ def CLUSTER(d): #pixel data comes in in 2d vector, only way to do svd
 	for index, P in enumerate(P1):
 		A = Frame(index, P1[index], P2[index])
 		data.append(A)
-		A.printS()
+		#A.printS()
 	ra = []
 	#select K random frames for K-means
 	for x in range(K):
@@ -242,18 +245,22 @@ def CLUSTER(d): #pixel data comes in in 2d vector, only way to do svd
 #			tmp.append(Dis(c, F))
 #		clu[Mindex(tmp)].addFrame(F)
 #		tmp.clear()
-	for C in clu:
-		C.printC()
-	print("best Frames")
+	#for C in clu:
+	#	C.printC()
+	#print("best Frames")
+	bestframesout = []
 	for f in FR:
-		f.printS()
+		#f.printS()
+		#print(f.FNo)
+		bestframesout.append(f.FNo)
 #	print(OUT)
 #	A = MinInter(clu, points)
 #	B = MaxIntra(clu)
-	PlotD(data, clu)
+	#PlotD(data, clu)
 #	print("minimal intercluster distance = %f" %(A))
 #	print("Maximum intracluster distance = %f" %(B))
 #	print("Dunn index = %f" %(B/A))
+	return bestframesout
 
-D = getData(sys.argv[1])
-CLUSTER(D)
+#D = getData(sys.argv[1])
+#CLUSTER(D)

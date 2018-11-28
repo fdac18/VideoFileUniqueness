@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/usr/bin/env python
 
 """
 How to Use this File:
@@ -59,10 +59,8 @@ def addDB_Frame(cnnct, vidID, newName, newRedArr, newGrnArr, newBluArr, newReals
 	#this should update a targeted frame as we create frames when we make videos all 'added' frames done by other programs is actually a matter of updating them
 	# in theory the ID of the frame for a given video should have the id of vid_id * 2 + 0 for average and + 1 for unique
 	newFrame = []
-	newFrame.append(newName)
-	newFrame.append(vidID)
 	#newFrame = newFrame + newRedArr + newGrnArr + newBluArr + newReals + newImags
-	newFrame = np.concatenate((newFrame,newRedArr,newGrnArr,newBluArr,newReals,newImags), axis=None)
+	newFrame = np.concatenate((vidID, newName, newFrame,newRedArr,newGrnArr,newBluArr,newReals,newImags), axis=None)
 	sql = ''' INSERT INTO frames( 
 			  	  vid_id, name,
 				  red_val_0, red_val_1, red_val_2, red_val_3, red_val_4,
