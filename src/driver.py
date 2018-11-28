@@ -31,6 +31,7 @@ dbref = connectDB(fname)
 
 ## Go through videos, go through frames, store the data.
 # for each video:
+allcands = []
 nth_frame = 20
 for i in range(len(data)):
 	# Add video to DB.
@@ -63,7 +64,18 @@ for i in range(len(data)):
 			framatrix[len(framatrix)-1].append(summary[i][j])
 	#print(summary)
 	#print(framatrix)
-	CLUSTER(framatrix)
+	candidates = CLUSTER(framatrix)
+	#print(candidates)
+	candmatrix = []
+	for item in candidates:
+		candmatrix.append([])
+		dat = summary[item]
+		for j in range(3,len(dat)):
+			candmatrix[len(candmatrix)-1].append(dat[j])
+	allcands.append(candmatrix)
+
+#print(candmatrix)
+print(allcands)
 
 # for each video:
 #	get each frame's data from database

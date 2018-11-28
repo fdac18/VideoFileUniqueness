@@ -139,7 +139,7 @@ def Kmeans(clusters, Frames, itter):
 		else:
 			MV+=1
 			if(MV == K):
-				print("HI")
+				#print("HI")
 				return itter
 
 	A = Kmeans(clusters, Frames, itter+1)
@@ -228,7 +228,7 @@ def CLUSTER(d): #pixel data comes in in 2d vector, only way to do svd
 	for index, P in enumerate(P1):
 		A = Frame(index, P1[index], P2[index])
 		data.append(A)
-		A.printS()
+		#A.printS()
 	ra = []
 	#select K random frames for K-means
 	for x in range(K):
@@ -245,18 +245,22 @@ def CLUSTER(d): #pixel data comes in in 2d vector, only way to do svd
 #			tmp.append(Dis(c, F))
 #		clu[Mindex(tmp)].addFrame(F)
 #		tmp.clear()
-	for C in clu:
-		C.printC()
-	print("best Frames")
+	#for C in clu:
+	#	C.printC()
+	#print("best Frames")
+	bestframesout = []
 	for f in FR:
-		f.printS()
+		#f.printS()
+		#print(f.FNo)
+		bestframesout.append(f.FNo)
 #	print(OUT)
 #	A = MinInter(clu, points)
 #	B = MaxIntra(clu)
-	PlotD(data, clu)
+	#PlotD(data, clu)
 #	print("minimal intercluster distance = %f" %(A))
 #	print("Maximum intracluster distance = %f" %(B))
 #	print("Dunn index = %f" %(B/A))
+	return bestframesout
 
 #D = getData(sys.argv[1])
 #CLUSTER(D)
