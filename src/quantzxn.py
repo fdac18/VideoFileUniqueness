@@ -6,7 +6,7 @@ import cv2
 
 
 def quantize_image(img, K = 5):
-
+	
 	#img = cv2.imread(file_path)
 	Z = img.reshape((-1,3))
 

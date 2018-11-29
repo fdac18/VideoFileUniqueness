@@ -41,19 +41,17 @@ for i in range(len(data)):
 	
 	# Go through frames.
 	vidcap = cv2.VideoCapture(data[i])
-	success,frm = vidcap.read()
+	#success,frm = vidcap.read()
 	count = 0
 	success = True
 
 	while success:
-		success,image = vidcap.read()
+		success,frm = vidcap.read()
 		print('read a new frame:',success)
 		if count % nth_frame == 0 :
 			(rs,gs,bs) = quantize_image(frm, 5)
 			(res, ims) = top5geo(frm)
 			fidno = addDB_Frame(dbref, vidno, str(0), rs, gs, bs, res, ims)	
-			#print(get_Frames(dbref, vidno))
-			#print(get_Vid_ID(dbref, "/home/dbarry/Video"))	
 			
 			print('success')
 		count+=1

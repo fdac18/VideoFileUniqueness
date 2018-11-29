@@ -33,10 +33,10 @@ def top5geo(img):
 				max = outimg[i][j]
 
 	# Scale -- helps with visibility.
-	for i in range(len(out)):
-		for j in range(len(out[0])):
-			outimg[i][j] *= 255.0/max
-			#outimg[i][j] = int(outimg[i][j])
+	#for i in range(len(out)):
+	#	for j in range(len(out[0])):
+	#		outimg[i][j] *= 255.0/max
+	#		#outimg[i][j] = int(outimg[i][j])
 
 	# Find the largest five values.
 	index_i = [0, 0, 0, 0, 0]
