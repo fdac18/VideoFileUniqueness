@@ -196,7 +196,7 @@ def PicVframes(VidF):	#takes in the list of best frames organized by vid# return
 	Frames, INDS, Vind, used, out = getBframes(Tracker)
 	numVids = len(VidF)
 
-	U, SIG, VT= np.linalg.svd(frames, full_matrices=True)
+	U, SIG, VT= np.linalg.svd(Frames, full_matrices=True)
 
 	P1 = U[0].copy()
 	P2 = U[1].copy()

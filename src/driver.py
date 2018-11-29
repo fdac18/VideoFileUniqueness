@@ -76,6 +76,8 @@ for i in range(len(data)):
 
 #print(candmatrix)
 print(allcands)
+print("\n")
+print(PicVframes(allcands))
 
 # for each video:
 #	get each frame's data from database
