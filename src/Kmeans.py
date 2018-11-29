@@ -202,6 +202,7 @@ def PicVframes(VidF):	#takes in the list of best frames organized by vid# return
 	P2 = U[1].copy()
 
 	F = []
+	flag = 0
 	for index, P in enumerate(P1):
 		A = Frame(index, P1[index], P2[index])
 		F.append(A)
@@ -213,11 +214,14 @@ def PicVframes(VidF):	#takes in the list of best frames organized by vid# return
 		i=0
 		while(i != len(Frames)):
 			if(INDS[i] == V):
+				flag = 1
 				F.pop(i)
 				Vind.pop(i)
 				INDS.pop(i)
 				used.pop(i)
 			else:
+				if(flag == 1):
+					break
 				i+=1
 		numVids-=1
 	return out
