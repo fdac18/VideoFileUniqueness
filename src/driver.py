@@ -10,6 +10,7 @@ from quantzxn import *
 from geom import *
 from storage import *
 from read_frame import *
+from write_frame import *
 #from Kmeans import CLUSTER
 from Kmeans import *
 import glob
@@ -32,6 +33,7 @@ dbref = connectDB(fname)
 ## Go through videos, go through frames, store the data.
 # for each video:
 allcands = []
+backtrack = []
 nth_frame = 20
 for i in range(len(data)):
 	# Add video to DB.
@@ -65,6 +67,7 @@ for i in range(len(data)):
 	#print(summary)
 	#print(framatrix)
 	candidates = CLUSTER(framatrix)
+	backtrack.append(candidates)
 	#print(candidates)
 	candmatrix = []
 	for item in candidates:
@@ -77,7 +80,14 @@ for i in range(len(data)):
 #print(candmatrix)
 print(allcands)
 print("\n")
-print(PicVframes(allcands))
+results=PicVframes(allcands)
+print(results)
+print(backtrack)
+
+for i in range(len(results)):
+	print("The thumbnail for video " + str(data[i]) + " is frame " + str(backtrack[i][results[i]]) + " saved in " + str(data[i]) + "_thumbnail.jpg\n")
+	write_frame(data[i], backtrack[i][results[i]])
+
 
 # for each video:
 #	get each frame's data from database
