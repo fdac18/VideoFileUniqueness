@@ -183,12 +183,12 @@ def getBframes(arr):
 	out3 =[]
 	out4 = []
 	for index, a in enumerate(arr):
+		out4.append(-1)
 		for i2, b in enumerate(a):
 			out.append(b)
 			out1.append(index)
 			out2.append(i2)
 			out3.append(0)
-			out4.append(0)
 	return out, out1, out2, out3, out4
 
 
@@ -199,7 +199,8 @@ def PicVframes(VidF):	#takes in the list of best frames organized by vid# return
 
 #	for f in Frames:
 #		print(f)
-#	print(INDS)
+#	print(len(VidF))
+##	print(INDS)
 #	print(Vind)
 #	print(used)
 #	print(out)
@@ -233,6 +234,7 @@ def PicVframes(VidF):	#takes in the list of best frames organized by vid# return
 					break
 				i+=1
 		numVids-=1
+#	print(out)
 	return out
 #TEST = [[[26, 150, 18, 98, 95, 1, 65, 28, 19, 119, 3, 27, 116, 16, 161, 43247.234, -10125.043, -10125.043, -8708.595, 7186.96, 0, -3495.2795, 3495.2795, -3295.5518, -1038.7915], [145, 21, 87, 95, 18, 61, 0, 11, 119, 28, 26, 3, 14, 161, 116, 43247.234, -10125.043, -10125.043, -8708.595, 7186.96, 0, -3495.2795, 3495.2795, -3295.5518, -1038.7915]], [[6, 51, 110, 104, 25, 13, 71, 25, 138, 39, 14, 92, 18, 169, 53, 65993.164, 9623.668, 9623.667, -6078.827, 4060.6895, 0, -563.89417, 563.89417, -1344.2504, 4718.924],  [31, 59, 8, 113, 111, 47, 80, 17, 151, 24, 62, 105, 19, 180, 17, 65993.164, 9623.668, 9623.667, -6078.827, 4060.6895, 0, -563.89417, 563.89417, -1344.2504, 4718.924]]]
 #PicVframes(TEST)
