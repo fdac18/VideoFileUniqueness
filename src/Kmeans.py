@@ -126,7 +126,7 @@ def Kmeans(clusters, Frames, itter):
 			#find if the cluster has no frames
 			oldX = c.getX()
 			oldY = c.getY()
-			if(len(c.frames) != 0):
+			if(len(c.frames) != 0 and itter != MaxI):
 				c.setX(Xavg/len(c.frames))
 				c.setY(Yavg/len(c.frames))
 			else:
@@ -199,13 +199,6 @@ def PicVframes(VidF):	#takes in the list of best frames organized by vid# return
 
 	for f in Frames:
 		print(f)
-#	print(len(VidF))
-#	print(INDS)
-#	print(Vind)
-#	print(used)
-#	print(out)
-#	print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-#	print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 	U, SIG, VT= np.linalg.svd(Frames, full_matrices=True)
 
 	P1 = U[0].copy()
@@ -223,12 +216,6 @@ def PicVframes(VidF):	#takes in the list of best frames organized by vid# return
 		ind = Vind[index]
 		out[V] = ind
 		i=0
-#		print(V)
-##		print(INDS)
-#		print(Vind)
-#		print(used)
-#		print(out)
-#		print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 		while(i < len(F)):
 
 			if(INDS[i] == V):
@@ -247,33 +234,6 @@ def PicVframes(VidF):	#takes in the list of best frames organized by vid# return
 #TEST = [[[26, 150, 18, 98, 95, 1, 65, 28, 19, 119, 3, 27, 116, 16, 161, 43247.234, -10125.043, -10125.043, -8708.595, 7186.96, 0, -3495.2795, 3495.2795, -3295.5518, -1038.7915], [145, 21, 87, 95, 18, 61, 0, 11, 119, 28, 26, 3, 14, 161, 116, 43247.234, -10125.043, -10125.043, -8708.595, 7186.96, 0, -3495.2795, 3495.2795, -3295.5518, -1038.7915]], [[6, 51, 110, 104, 25, 13, 71, 25, 138, 39, 14, 92, 18, 169, 53, 65993.164, 9623.668, 9623.667, -6078.827, 4060.6895, 0, -563.89417, 563.89417, -1344.2504, 4718.924],  [31, 59, 8, 113, 111, 47, 80, 17, 151, 24, 62, 105, 19, 180, 17, 65993.164, 9623.668, 9623.667, -6078.827, 4060.6895, 0, -563.89417, 563.89417, -1344.2504, 4718.924]]]
 #TEST = [[[107, 3, 208, 135, 32, 82, 5, 208, 119, 167, 72, 5, 208, 113, 230, 129714.59, -12416.072, -12416.072, -10086.683, -10086.683, 0, -3671.425, 3671.4248, -5494.782, 5494.782], [134, 3, 32, 106, 208, 118, 5, 167, 81, 208, 111, 4, 230, 71, 208, 129714.59, -12416.072, -12416.072, -10086.683, -10086.683, 0, -3671.425, 3671.4248, -5494.782, 5494.782], [3, 32, 207, 133, 105, 5, 167, 207, 117, 80, 4, 230, 207, 110, 70, 129714.59, -12416.072, -12416.072, -10086.683, -10086.683, 0, -3671.425, 3671.4248, -5494.782, 5494.782]], [[18, 82, 143, 19, 94, 28, 9, 60, 0, 119, 116, 13, 26, 2, 161, 43247.234, -10125.043, -10125.043, -8708.595, 7186.96, 0, -3495.2795, 3495.2795, -3295.5518, -1038.7915], [94, 18, 80, 142, 18, 119, 1, 8, 59, 28, 161, 2, 12, 25, 116, 43247.234, -10125.043, -10125.043, -8708.595, 7186.96, 0, -3495.2795, 3495.2795, -3295.5518, -1038.7915], [70, 95, 18, 139, 13, 4, 119, 28, 56, 1, 10, 161, 116, 25, 2, 43247.234, -10125.043, -10125.043, -8708.595, 7186.96, 0, -3495.2795, 3495.2795, -3295.5518, -1038.7915]], [[110, 33, 9, 65, 131, 33, 50, 17, 89, 172, 25, 67, 20, 118, 192, 65993.164, 9623.668, 9623.667, -6078.827, 4060.6895, 0, -563.89417, 563.89417, -1344.2504, 4718.924], [14, 48, 136, 56, 109, 25, 66, 161, 102, 25, 32, 84, 176, 157, 18, 65993.164, 9623.668, 9623.667, -6078.827, 4060.6895, 0, -563.89417, 563.89417, -1344.2504, 4718.924], [31, 59, 8, 113, 111, 47, 80, 17, 151, 24, 62, 105, 19, 180, 17, 65993.164, 9623.668, 9623.667, -6078.827, 4060.6895, 0, -563.89417, 563.89417, -1344.2504, 4718.924]]]
 #PicVframes(TEST)
-#		F = []
-#		for index, P in enumerate(P1):
-#			A = Frame(index, P1[index], P2[index])
-#			F.append(A)
-#			#A.printS()
-#		ra = []
-#		#select K random frames for K-means
-#		for x in range(K):
-#			ra.append(random.randint(0, len(F)))
-#		clu = []
-#		#set up initial cluster based on the random frames
-#		for x in range(0, K):
-#			A = Cluster(x, F[ra[x]].getX(), F[ra[x]].getY())
-#			clu.append(A)
-#		OUT, FR = Kmeans(clu, F, 0)	#outputs are meanignless, but all frames are clustered
-#		LAR = maxDist(clu, INDS)	#find the lagest distance between clusters and videos
-#		if(len(LAR)!= 0):	#no problems
-#			out[LAR[0][0]] = LAR[0][1]
-#			out[LAR[1][0]] = LAR[1][1]
-#			F1 = LAR[0]
-#			F2 = LAR[1]
-#			V1 = INDS[F1]
-#			V2 = INDS[F2]
-#			out[V1] = Vind[F1]
-#			out[V2] = Vind[F2]
-
-
 
 def PlotD(Sch, clus):
 	plt.figure()
@@ -343,27 +303,13 @@ def CLUSTER(d): #pixel data comes in in 2d vector, only way to do svd
 		A = Cluster(x, data[ra[x]].getX(), data[ra[x]].getY())
 		clu.append(A)
 	OUT, FR = Kmeans(clu, data, 0)
-#	tmp = []
-#	for F in Fr:
-#		for c in clu:
-#			tmp.append(Dis(c, F))
-#		clu[Mindex(tmp)].addFrame(F)
-#		tmp.clear()
-	#for C in clu:
-	#	C.printC()
-	#print("best Frames")
+
 	bestframesout = []
 	for f in FR:
-		#f.printS()
-		#print(f.FNo)
 		bestframesout.append(f.FNo)
-#	print(OUT)
-#	A = MinInter(clu, points)
-#	B = MaxIntra(clu)
-	#PlotD(data, clu)
-#	print("minimal intercluster distance = %f" %(A))
-#	print("Maximum intracluster distance = %f" %(B))
-#	print("Dunn index = %f" %(B/A))
+
+	PlotD(data, clu)
+
 	return bestframesout
 
 #D = getData(sys.argv[1])
