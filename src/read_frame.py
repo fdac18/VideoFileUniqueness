@@ -13,6 +13,3 @@ def read_frame(video_file, nth_frame = 20):
 			cv2.imwrite('frame%d.jpg'%count,image)
 			print('success')
 		count+=1
-
-#Call the function to test
-#read_frame('amarec(20181005-2217).avi', 100)

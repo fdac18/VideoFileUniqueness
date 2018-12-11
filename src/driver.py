@@ -11,7 +11,6 @@ from geom import *
 from storage import *
 from read_frame import *
 from write_frame import *
-#from Kmeans import CLUSTER
 from Kmeans import *
 import glob
 
@@ -31,20 +30,19 @@ fname = file_creation()
 dbref = connectDB(fname)
 
 ## Go through videos, go through frames, store the data.
-# for each video:
 allcands = []
 backtrack = []
 nth_frame = 20
 for i in range(len(data)):
-	# Add video to DB.
+	## Add video to DB.
 	vidno = addDB_Vid(dbref, data[i])
 	
-	# Go through frames.
+	## Go through each frame per video.
 	vidcap = cv2.VideoCapture(data[i])
-	#success,frm = vidcap.read()
 	count = 0
 	success = True
 
+	## Parse features from the frame contents.
 	while success:
 		success,frm = vidcap.read()
 		print('read a new frame:',success)
@@ -56,17 +54,19 @@ for i in range(len(data)):
 			print('success')
 		count+=1
 
+	## Find the thumbnail candidates for each video.
 	summary = get_Frames(dbref, vidno)
+
 	framatrix = []
 	for i in range(len(summary)):
 		framatrix.append([])
 		for j in range(3,len(summary[i])):
 			framatrix[len(framatrix)-1].append(summary[i][j])
-	#print(summary)
-	#print(framatrix)
+
 	candidates = CLUSTER(framatrix)
 	backtrack.append(candidates)
-	#print(candidates)
+
+	## Store the candidates for each video.
 	candmatrix = []
 	for item in candidates:
 		candmatrix.append([])
@@ -75,23 +75,11 @@ for i in range(len(data)):
 			candmatrix[len(candmatrix)-1].append(dat[j])
 	allcands.append(candmatrix)
 
-#print(candmatrix)
-print(allcands)
+## Choose the final thumbnails.
 print("\n")
 results=PicVframes(allcands)
-print(results)
-print(backtrack)
 
+## Display the final results to the user.
 for i in range(len(results)):
 	print("The thumbnail for video " + str(data[i]) + " is frame " + str(backtrack[i][results[i]]) + " saved in " + str(data[i]) + "_thumbnail.jpg\n")
 	write_frame(data[i], backtrack[i][results[i]])
-
-
-# for each video:
-#	get each frame's data from database
-#	do PCA and retain first two PC's
-#	do clustering and find the most central point to the largest cluster - this will be that video's representative frame
-#	keep track of this frame's id
-
-# for each of the videos' special frame...
-

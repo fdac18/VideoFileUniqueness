@@ -11,5 +11,4 @@ def write_frame(video_file, nth_frame):
 		success,image = vidcap.read()
 		count+=1
 	
-	#video_file+'_thumbnail.jpg'
 	cv2.imwrite(video_file+'_thumbnail.jpg',image)
